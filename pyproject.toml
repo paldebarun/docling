@@ -1,0 +1,20 @@
+[project]
+name = "docling_service"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Debarun",email = "paldebarun27@gmail.com"}
+]
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "docling (>=2.82.0,<3.0.0)",
+    "fastapi (>=0.135.2,<0.136.0)",
+    "uvicorn (>=0.42.0,<0.43.0)",
+    "python-multipart (>=0.0.22,<0.0.23)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
