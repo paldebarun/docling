@@ -7,6 +7,6 @@ env/
 # Python cache
 __pycache__/
 *.pyc
-
+/uploads
 # OS / misc
 .DS_Store

@@ -1,6 +1,11 @@
 import psycopg2
+from configurations.config import DATABASE_URL
+from configurations.queries import (
+    CREATE_DOCUMENTS_TABLE,
+    GET_DOCUMENT,
+    UPSERT_DOCUMENT
+)
 
-DATABASE_URL = "postgresql://admin:admin@localhost:5432/docling_db"
 
 
 def get_connection():
@@ -11,14 +16,7 @@ def init_db():
     conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS documents (
-            id SERIAL PRIMARY KEY,
-            file_path TEXT UNIQUE,
-            extracted_text TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
+    cur.execute(CREATE_DOCUMENTS_TABLE)
 
     conn.commit()
     cur.close()
@@ -30,8 +28,7 @@ def get_document(file_path: str):
     cur = conn.cursor()
 
     cur.execute(
-        "SELECT extracted_text FROM documents WHERE file_path = %s",
-        (file_path,)
+        GET_DOCUMENT, (file_path,)
     )
 
     result = cur.fetchone()
@@ -46,12 +43,7 @@ def save_document(file_path: str, text: str):
     conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute("""
-        INSERT INTO documents (file_path, extracted_text)
-        VALUES (%s, %s)
-        ON CONFLICT (file_path)
-        DO UPDATE SET extracted_text = EXCLUDED.extracted_text;
-    """, (file_path, text))
+    cur.execute(UPSERT_DOCUMENT, (file_path, text))
 
     conn.commit()
     cur.close()

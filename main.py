@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from api.routes import router
 import uvicorn
 from services.db_service import init_db
+from configurations.config import PORT
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -29,8 +30,8 @@ def health_check():
 
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app",   # module:variable
+        "main:app",   
         host="0.0.0.0",
-        port=8000,
+        port=PORT,
         reload=True
     )
